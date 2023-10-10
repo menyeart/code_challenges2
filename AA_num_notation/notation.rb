@@ -2,44 +2,48 @@ class Notation
   def initialize
   end
 
-  def convert(number)
-    if number.abs < 1000
-      if number.class == Integer
-        number.to_s
-      elsif number.floor(2) == 0
+  def convert(x)
+    if x.abs < 1000
+      if x.class == Integer || x % 1 == 0 || x == 0
+        x.to_i.to_s
+      elsif x.floor(2) == 0
         return "0"
       else 
-        number > 0 ? number.floor(2).to_s : number.ceil(2).to_s
+        x > 0 ? x.floor(2).to_s : x.ceil(2).to_s
       end
-    elsif number.abs > 1.0e+15
-      over = (number - 100_000_000_000) / 1000
-      range = ("a".."z")
+    elsif x.abs >= 1.0e+15
+ 
+      over = (x - 1000_000_000_000_000) / 1000000000000000000.0
+      positions = over.to_i
+      list = ("a".."z").to_a
       
       first_letter = "a"
-      second_letter = range[over / 1000]
+      second_letter = list[positions]
       
-      number.to_s.concat(first_letter).concat(second_letter)
+      ("%.2e" %x).slice(0,4).to_f % 1 == 0 ? ("%.2e" %x).slice(0, 1).to_s.concat(first_letter).concat(second_letter) :("%.2e" %x).slice(0,4).to_s.concat(first_letter).concat(second_letter)
+  
     else 
-
-      letters = ["K","M","B","T"]
-      letter = letters[(number / 1000) - 1]
-      scientific = ("%.2e" %number)
-
-      if number % 10 ^(("%.2e" %number)[-2..-1].to_i) == 0
-        binding.pry
-        (number / (("%.2e" %number)[-2..-1].to_i)) + letter
+      num_len = x.to_i.to_s.chars.length
+      abbrev = 0
+      if num_len > 12
+        letter = "T"
+        abbrev = x / 1_000_000_000_000.0
+      elsif num_len < 7
+        letter = "K"
+        abbrev = x / 1_000.0
+      elsif num_len > 9 and num_len < 12
+        abbrev = x / 1_000_000_000.0
+        letter = "B"
       else
-        binding.pry
-        
-        
+        letter = "M"
+        abbrev = x / 1_000_000.0
       end
-
-
-      
-       
-
-
-
+ 
+      if abbrev >= 10
+        abbrev.to_i.to_s + letter
+      else
+        abbrev.round(2) % 1 == 0 ? abbrev.to_i.to_s + letter : abbrev.floor(2).to_s + letter
+      end
     end
   end
 end
