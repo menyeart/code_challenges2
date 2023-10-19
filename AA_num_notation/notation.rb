@@ -58,14 +58,20 @@ class Notation
 
 
   def convert(x)
-    sci_formatted = '%.4e' %x
-    exponent = sci_formatted.slice(-2..-1)
+    sci_formatted = '%.40e' %x
+    exponent = sci_formatted.slice(-2..-1).to_i
     base_num = sci_formatted.slice(0..4).to_f.floor(2).round(2)
-    small_letters = ["K", "M", "B", "T"]
-    big_letters = ("a".."z").to_a
+    small_letters = (["K", "M", "B", "T"] * 3).sort
+    big_letters = (("a".."z").to_a * 3).sort
     first_big_let = big_letters[(exponent / 90).floor()]
-    second_big_let = big_letters[(exponent % 90)]
+    second_big_let = big_letters[(exponent % 90) - 15]
+    small_num_let = small_letters[exponent - 3]
 
+    if exponent < 12
+      num = base_num.to_s + small_num_let
+    else
+      num = base_num.to_s + first_big_let + second_big_let
+    end
     binding.pry
   end
 end
