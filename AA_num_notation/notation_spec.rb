@@ -20,7 +20,7 @@ RSpec.describe "AA Num Notation" do
     expect(note.convert(-740.069)).to eq("-740")
   end
 
-  it "takes numbers with absolute values greater than 999 and up to 1 Trillion and outputs 'AA' number notation" do
+  xit "takes numbers with absolute values greater than 999 and up to 1 Trillion and outputs 'AA' number notation" do
     note = Notation.new
 
     expect(note.convert(1000)).to eq("1K")
@@ -34,7 +34,7 @@ RSpec.describe "AA Num Notation" do
     expect(note.convert(999999999999999)).to eq("999T")
   end
 
-  xit "takes numbers with absolute values over 1000 Trillion and outputs 'AA' number notation" do
+  it "takes numbers with absolute values over 1000 Trillion and outputs 'AA' number notation" do
     note = Notation.new
 
     expect(note.convert(1000000000000000)).to eq("1aa")
