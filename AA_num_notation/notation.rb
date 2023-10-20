@@ -78,8 +78,14 @@ class Notation
     elsif exponent < 15
       x = x / let_num_hash[small_num_let].to_f
       x < 0 ? x = x.ceil(2) : x = x.floor(2)
-      x = x.to_i if x / x.to_i == 1
+
+
+
+      x = x.to_s.split("")[0..2].join.to_f if x.to_s.split("").count > 5
+      x = BigDecimal(x, 3).floor(3).round(2).to_f if x.to_s.split("").count > 3
       
+
+      x = x.to_i if x / x.to_i == 1
       x.to_s + small_num_let
     else
       num = base_num.to_s + first_big_let + second_big_let
