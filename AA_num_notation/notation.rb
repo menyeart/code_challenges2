@@ -1,3 +1,5 @@
+require 'bigdecimal'
+
 class Notation
   def initialize
   end
@@ -61,17 +63,32 @@ class Notation
     sci_formatted = '%.40e' %x
     exponent = sci_formatted.slice(-2..-1).to_i
     base_num = sci_formatted.slice(0..4).to_f.floor(2).round(2)
-    small_letters = (["K", "M", "B", "T"] * 3).sort
+    small_letters = (["K", "M", "B", "T"] * 3).group_by { |x| x }.values.flatten
     big_letters = (("a".."z").to_a * 3).sort
     first_big_let = big_letters[(exponent / 90).floor()]
     second_big_let = big_letters[(exponent % 90) - 15]
     small_num_let = small_letters[exponent - 3]
+    let_num_hash = {"K" => 1000, "M" => 1_000_000, "B" => 1_000_000_000, "T" => 1_000_000_000_000}
 
-    if exponent < 12
-      num = base_num.to_s + small_num_let
+    if x.abs < 1000
+      x < 0 ? x = x.ceil(2) : x = x.floor(2)
+      x = BigDecimal(x, 3).to_f.floor(2).round(2)
+      x = x.to_i if x / x.to_i == 1 || x == 0
+      x.to_s
+    elsif exponent < 15
+      x = x / let_num_hash[small_num_let].to_f
+      x < 0 ? x = x.ceil(2) : x = x.floor(2)
+
+
+
+      x = x.to_s.split("")[0..2].join.to_f if x.to_s.split("").count > 5
+      x = BigDecimal(x, 3).floor(3).round(2).to_f if x.to_s.split("").count > 3
+      
+
+      x = x.to_i if x / x.to_i == 1
+      x.to_s + small_num_let
     else
       num = base_num.to_s + first_big_let + second_big_let
     end
-    binding.pry
   end
 end
