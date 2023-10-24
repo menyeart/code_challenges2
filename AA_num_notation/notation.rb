@@ -88,6 +88,8 @@ class Notation
       x = x.to_i if x / x.to_i == 1
       x.to_s + small_num_let
     else
+    
+      base_num = base_num.to_i.to_s if base_num % 1 == 0 
       num = base_num.to_s + first_big_let + second_big_let
     end
   end
