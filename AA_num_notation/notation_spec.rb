@@ -46,5 +46,9 @@ RSpec.describe "AA Num Notation" do
 
     expect(note.convert(5.5369659080585477e+194)).to eq("553ch")
     expect(note.convert(1.000000001e+90)).to eq("1az")
+    expect(note.convert(1.000000001e+15)).to eq("1aa")
+    expect(note.convert(1.000000001e+92)).to eq("1az")
+    expect(note.convert(1.000000001e+93)).to eq("1ba")
+    expect(note.convert(1.000000001e+171)).to eq("1ca")
   end
 end
