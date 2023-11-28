@@ -92,7 +92,45 @@ RSpec.describe "Curator" do
     
     curator.add_artist(artist_1)
     curator.add_artist(artist_2)
-    
+
     expect(curator.find_artist_by_id("1")).to eq(artist_1)
+  end
+
+  it "can return a list of all artists and their photogrpahs" do
+    curator = Curator.new
+    artist_1 = Artist.new({
+      id: "1",      
+      name: "Henri Cartier-Bresson",      
+      born: "1908",      
+      died: "2004",      
+      country: "France"      
+    })  
+    artist_2 = Artist.new({
+      id: "2",      
+      name: "Ansel Adams",      
+      born: "1902",      
+      died: "1984",      
+      country: "United States"      
+    })
+
+    photo_1 = Photograph.new({
+      id: "1",      
+      name: "Rue Mouffetard, Paris (Boy with Bottles)",      
+      artist_id: "1",      
+      year: "1954"      
+    })
+    photo_2 = Photograph.new({
+      id: "2",      
+      name: "Moonrise, Hernandez",      
+      artist_id: "2",      
+      year: "1941"    
+    })
+    
+    curator.add_artist(artist_1)
+    curator.add_artist(artist_2)
+    curator.add_photograph(photo_1)
+    curator.add_photograph(photo_2)
+    
+    expect(curator.all_artists_and_photos).to eq({"Henri Cartier-Bresson" => ["Rue Mouffetard, Paris (Boy with Bottles)"], "Ansel Adams" => ["Moonrise, Hernandez"]})
   end
 end
