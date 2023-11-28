@@ -48,4 +48,8 @@ class Curator
     @artists.find_all{ |artist| artist.country == country}.map { |artist| artist.id}
   end
 
+  def photos_taken_between(start_year, end_year)
+    @photographs.find_all { |photo| photo.year.between?(start_year, end_year)}
+  end
+
 end
