@@ -1,6 +1,7 @@
 require './lib/photograph'
 require './lib/artist'
 require './lib/curator'
+require 'pry'
 
 RSpec.describe "Curator" do
   it "exists" do
@@ -132,5 +133,52 @@ RSpec.describe "Curator" do
     curator.add_photograph(photo_2)
     
     expect(curator.all_artists_and_photos).to eq({"Henri Cartier-Bresson" => ["Rue Mouffetard, Paris (Boy with Bottles)"], "Ansel Adams" => ["Moonrise, Hernandez"]})
+  end
+
+  it "can return a list of names of the artists who have more than one photograph" do
+    curator = Curator.new
+    artist_1 = Artist.new({
+      id: "1",      
+      name: "Henri Cartier-Bresson",      
+      born: "1908",      
+      died: "2004",      
+      country: "France"      
+    })  
+    artist_2 = Artist.new({
+      id: "2",      
+      name: "Ansel Adams",      
+      born: "1902",      
+      died: "1984",      
+      country: "United States"      
+    })
+
+    photo_1 = Photograph.new({
+      id: "1",      
+      name: "Rue Mouffetard, Paris (Boy with Bottles)",      
+      artist_id: "1",      
+      year: "1954"      
+    })
+    photo_2 = Photograph.new({
+      id: "2",      
+      name: "Moonrise, Hernandez",      
+      artist_id: "2",      
+      year: "1941"    
+    })
+
+    photo_3 = Photograph.new({
+      id: "3",      
+      name: "Monolith(The north face of half dome)",      
+      artist_id: "2",      
+      year: "1942"    
+    })
+    
+    curator.add_artist(artist_1)
+    curator.add_artist(artist_2)
+    curator.add_photograph(photo_1)
+    curator.add_photograph(photo_2)
+    curator.add_photograph(photo_3)
+    
+    expect(curator.artists_with_multiple_photos).to eq(["Ansel Adams"])
+    expect(curator.artists_with_multiple_photos).to_not eq(["Henri Cartier-Bresson", "Ansel Adams"])
   end
 end
