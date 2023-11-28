@@ -30,11 +30,46 @@ RSpec.describe "Curator" do
       year: "1941"    
     })
 
+    photo_3 = Photograph.new({
+      id: "2",      
+      name: "Moonrise, Hernandez",      
+      artist_id: "2",      
+      year: "1941"    
+    })
+
     expect(curator.photographs).to eq([])
 
     curator.add_photograph(photo_1)
     curator.add_photograph(photo_2)
 
     expect(curator.photographs).to eq([photo_1, photo_2])
+  end
+
+  it "has a list of artists and artists can be added to the list" do
+    curator = Curator.new
+    artist_1 = Artist.new({
+      id: "1",      
+      name: "Henri Cartier-Bresson",      
+      born: "1908",      
+      died: "2004",      
+      country: "France"      
+    })  
+    artist_2 = Artist.new({
+      id: "2",      
+      name: "Ansel Adams",      
+      born: "1902",      
+      died: "1984",      
+      country: "United States"      
+    })   
+    
+    expect(curator.artists).to eq([])
+
+    curator.add_artist(artist_1)
+
+    expect(curator.artists).to eq([artist_1])
+
+    curator.add_artist(artist_2)
+
+    expect(curator.artists).to eq([artist_1, artist_2])
   end
 end
