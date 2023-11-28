@@ -274,4 +274,61 @@ RSpec.describe "Curator" do
     
     expect(curator.photos_taken_between("1953", "1955")).to eq([photo_1])
   end
+
+  it "can get an artist's age when a photo was taken and all other photos also taken at that age" do
+    curator = Curator.new
+    artist_1 = Artist.new({
+      id: "1",      
+      name: "Henri Cartier-Bresson",      
+      born: "1908",      
+      died: "2004",      
+      country: "France"      
+    })  
+    artist_2 = Artist.new({
+      id: "2",      
+      name: "Ansel Adams",      
+      born: "1902",      
+      died: "1984",      
+      country: "United States"      
+    })
+
+    photo_1 = Photograph.new({
+      id: "1",      
+      name: "Rue Mouffetard, Paris (Boy with Bottles)",      
+      artist_id: "1",      
+      year: "1954"      
+    })
+    photo_2 = Photograph.new({
+      id: "2",      
+      name: "Moonrise, Hernandez",      
+      artist_id: "2",      
+      year: "1941"    
+    })
+
+    photo_3 = Photograph.new({
+      id: "3",
+      name: "Monolith(The north face of half dome)",
+      artist_id: "2",
+      year: "1942"
+    })
+
+    photo_4 = Photograph.new({
+      id: "4",
+      name: "That one of yosemite valley",
+      artist_id: "2",
+      year: "1942"
+    })
+    
+    curator.add_artist(artist_1)
+    curator.add_artist(artist_2)
+    curator.add_photograph(photo_1)
+    curator.add_photograph(photo_2)
+    curator.add_photograph(photo_3)
+    
+    expect(curator.get_artists_age_and_other_photos(photo_3)).to eq("Ansel Adams was 40yrs old when Monolith(The north face of half dome) was taken. Other photos from that year include: none.")
+
+    curator.add_photograph(photo_4)
+    binding.pry
+    expect(curator.get_artists_age_and_other_photos(photo_3)).to eq("Ansel Adams was 40yrs old when Monolith(The north face of half dome) was taken. Other photos from that year include: That one of yosemite valley.")
+  end
 end
