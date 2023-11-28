@@ -34,5 +34,21 @@ RSpec.describe "Artist" do
     expect(ansel.country).to eq("United States")
   end
 
+  it "can calculate its age at death" do
+    attributes = {
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+    }
+
+    ansel = Artist.new(attributes)
+    
+    expect(ansel.age_at_death).to eq(82)
+    expect(ansel.age_at_death).to_not eq(83)
+    expect(ansel.age_at_death).to_not eq(84)
+  end
+
 
 end
