@@ -36,12 +36,16 @@ class Curator
   end
 
   def photos_from(country)
-    ids = @artists.find_all{ |artist| artist.country == country}.map { |artist| artist.id}
+    ids = artist_ids_by_country(country)
     photos = []
     @photographs.each do |photo| 
       photos << photo.name if ids.include?(photo.artist_id)
     end
     photos
+  end
+
+  def artist_ids_by_country(country)
+    @artists.find_all{ |artist| artist.country == country}.map { |artist| artist.id}
   end
 
 end
